@@ -101,6 +101,7 @@ SLEEP_THRESHOLD = int(environ.get('SLEEP_THRESHOLD', '60'))
 WORKERS = int(environ.get('WORKERS', '4'))
 SESSION_NAME = str(environ.get('SESSION_NAME', 'LazyBot'))
 MULTI_CLIENT = False
+HASH_LENGTH = int(environ.get("HASH_LENGTH", 7))
 name = str(environ.get('name', 'LazyPrincess'))
 FILES_CHANNEL = int(
     environ.get("FILES_CHANNEL", "-1001871766752")
