@@ -4,6 +4,7 @@ from info import info
 from database.lazy_utils import progress_for_pyrogram, convert, humanbytes
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from pyrogram.errors import FloodWait, UserNotParticipant
 import os 
 import humanize
 from util.human_readable import humanbytes
