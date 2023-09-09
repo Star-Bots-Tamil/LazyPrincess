@@ -24,10 +24,10 @@ async def channel_receive_handler(bot, broadcast):
         await bot.leave_chat(broadcast.chat.id)
         return
     try:
-        log_msg = await broadcast.forward(chat_id=Var.BIN_CHANNEL)
+        log_msg = await broadcast.forward(chat_id=info.FILES_CHANNEL)
         file_name = get_media_file_name(broadcast)
-        file_hash = get_hash(log_msg, Var.HASH_LENGTH)
-        stream_link = "https://{}/Watch/{}/{}?hash={}".format(info.FQDN, log_msg.id, file_name, file_hash) if Var.ON_HEROKU or Var.NO_PORT else \
+        file_hash = get_hash(log_msg, info.HASH_LENGTH)
+        stream_link = "https://{}/Watch/{}/{}?hash={}".format(info.FQDN, log_msg.id, file_name, file_hash) if info.ON_HEROKU or info.NO_PORT else \
             "http://{}:{}/Watch/{}/{}?hash={}".format(info.FQDN,
                                     info.PORT,
                                     log_msg.id,
