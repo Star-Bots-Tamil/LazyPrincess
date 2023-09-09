@@ -82,6 +82,7 @@ lazy_groups = environ.get('LAZY_GROUPS','')
 LAZY_GROUPS = [int(lazy_groups) for lazy_groups in lazy_groups.split()] if lazy_groups else None # ADD GROUP ID IN THIS VARIABLE
 my_users = [int(my_users) if id_pattern.search(my_users) else my_users for my_users in environ.get('MY_USERS', '').split()]
 MY_USERS = (my_users) if my_users else []
+BOT_USERNAME = environ.get('BOT_USERNAME' ,'Star_Moviess_Bot' )
 
 # Online Stream and Download
 PORT = int(environ.get('PORT', 8080))
