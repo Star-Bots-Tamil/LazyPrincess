@@ -1,6 +1,17 @@
 from pyrogram import Client, filters, enums
 from pyshorteners import Shortener
 from info import info
+from database.lazy_utils import progress_for_pyrogram, convert, humanbytes
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+import os 
+import humanize
+from util.human_readable import humanbytes
+from urllib.parse import quote_plus
+from util.file_properties import get_name, get_hash, get_media_file_size
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 async def get_channel_shortlink(link):
     url = 'https://tnshort.net/api'
