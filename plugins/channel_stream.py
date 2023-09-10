@@ -1,6 +1,6 @@
 from pyrogram import Client, filters, enums
 from pyshorteners import Shortener
-from info import info
+from info import *
 from database.lazy_utils import progress_for_pyrogram, convert, humanbytes
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
