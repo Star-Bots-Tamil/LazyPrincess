@@ -45,8 +45,6 @@ def get_media_file_name(m):
     group=4,
 )
 async def private_receive_handler(c: Client, m: Message):
-    if STREAMING_USERS and not ((str(m.from_user.id) in STREAMING_USERS) or (m.from_user.username in STREAMING_USERS)):
-        return await m.reply("**You are Not Allowed to Use This Bot.**", quote=True)
         log_msg = await m.forward(chat_id=FILES_CHANNEL)
         file_name = get_media_file_name(m)
         file_hash = get_hash(log_msg, HASH_LENGTH)
