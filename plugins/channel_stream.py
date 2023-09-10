@@ -38,8 +38,8 @@ async def channel_receive_handler(bot, broadcast):
     try:
         log_msg = await broadcast.forward(chat_id=FILES_CHANNEL)
         file_name = get_media_file_name(broadcast)
-        file_hash = get_hash(log_msg, info.HASH_LENGTH)
-        stream_link = "https://{}/Watch/{}/{}?hash={}".format(FQDN, log_msg.id, file_name, file_hash) if info.ON_HEROKU or info.NO_PORT else \
+        file_hash = get_hash(log_msg, HASH_LENGTH)
+        stream_link = "https://{}/Watch/{}/{}?hash={}".format(FQDN, log_msg.id, file_name, file_hash) if ON_HEROKU or NO_PORT else \
             "http://{}:{}/Watch/{}/{}?hash={}".format(FQDN,
                                     PORT,
                                     log_msg.id,
@@ -48,7 +48,7 @@ async def channel_receive_handler(bot, broadcast):
         shortened_link = await get_channel_shortlink(stream_link)
 
         await log_msg.reply_text(
-            text=f"<b>Channel Name :- {broadcast.chat.title}\nChannel ID :- <code>{broadcast.chat.id}</code>\nRequest URL :- https://t.me/{(await bot.get_me()).username}?start=Star_Bots_Tamil_{str(log_msg.id)}</b>",
+            text=f"<b>Channel Name :- {broadcast.chat.title}\nChannel ID :- <code>{broadcast.chat.id}</code>\nRequest URL :- {stream_link}\nShortener Link :- {shortened_link}</b>",
             quote=True,
             parse_mode=ParseMode.HTML
         )
@@ -61,7 +61,7 @@ async def channel_receive_handler(bot, broadcast):
     except FloodWait as w:
         print(f"Sleeping for {str(w.x)}s")
         await asyncio.sleep(w.x)
-        await bot.send_message(chat_id=info.FILES_CHANNEL,
+        await bot.send_message(chat_id=FILES_CHANNEL,
                              text=f"<b>Got FloodWait of {str(w.x)}s From {broadcast.chat.title}\n\nChannel ID :-</b> <code>{str(broadcast.chat.id)}</code>",
                              disable_web_page_preview=True, parse_mode=ParseMode.HTML)
     except Exception as e:
