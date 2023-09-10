@@ -148,11 +148,12 @@
             "required": true
         }
     },
+    "addons": [],
     "buildpacks": [{
         "url": "heroku/python"
       }],
     "formation": {
-        "web": {
+        "worker": {
             "quantity": 1,
             "size": "eco"
         }
