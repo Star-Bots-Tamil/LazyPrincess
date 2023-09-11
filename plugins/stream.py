@@ -85,13 +85,9 @@ async def channel_receive_handler(bot, broadcast):
         log_msg = await broadcast.forward(chat_id=FILES_CHANNEL)
         file_name = get_media_file_name(broadcast)
         file_hash = get_hash(log_msg, HASH_LENGTH)
-        stream_link = "https://{}Watch/{}/{}?hash={}".format(FQDN, log_msg.id, file_name, file_hash) if ON_HEROKU or NO_PORT else \
-            "http://{}:{}Watch/{}/{}?hash={}".format(FQDN,
-                                    PORT,
-                                    log_msg.id,
-                                    file_name,
-                                    file_hash)
-        shortened_link = await get_channel_shortlink(stream_link)
+        stream_link = "{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}" if ON_HEROKU or NO_PORT else \
+            "{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        shortened_link = await get_channel_shortlink(message.chat.id, stream_link)
 
         await log_msg.reply_text(
             text=f"<b>Channel Name :- {broadcast.chat.title}\nChannel ID :- <code>{broadcast.chat.id}</code>\nRequest URL :- {stream_link}\nShortener Link :- {shortened_link}</b>",
