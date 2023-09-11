@@ -45,6 +45,7 @@ def get_media_file_name(m):
     group=4,
 )
 async def private_receive_handler(c: Client, m: Message):
+    try:
         msg_text ="""
 <b>Your Link is Generated... ⚡\n
 📁 File Name :- {get_name(log_msg)}\n
