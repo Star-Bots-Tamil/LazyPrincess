@@ -1,4 +1,5 @@
 from pyrogram import Client, filters, enums
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ForceReply
 from pyshorteners import Shortener
 from info import *
 from database.lazy_utils import progress_for_pyrogram, convert, humanbytes
