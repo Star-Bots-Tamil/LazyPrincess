@@ -30,7 +30,7 @@ def get_media_file_name(m):
     else:
         return None
 
-@StreamBot.on_message(
+@Client.on_message(
     filters.private
     & (
         filters.document
