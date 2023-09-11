@@ -45,35 +45,11 @@ def get_media_file_name(m):
     group=4,
 )
 async def private_receive_handler(c: Client, m: Message):
-        log_msg = await m.forward(chat_id=FILES_CHANNEL)
-        file_name = get_media_file_name(m)
-        file_hash = get_hash(log_msg, HASH_LENGTH)
-        stream_link = "https://{}/{}/{}?hash={}".format(FQDN, log_msg.id, file_name, file_hash) if ON_HEROKU or NO_PORT else \
-            "http://{}:{}/{}/{}?hash={}".format(FQDN,
-                                    PORT,
-                                    log_msg.id,
-                                    file_name,
-                                    file_hash)
-        watch_link = "https://{}/Watch/{}/{}?hash={}".format(FQDN, log_msg.id, file_name, file_hash) if ON_HEROKU or NO_PORT else \
-            "http://{}:{}/Watch/{}/{}?hash={}".format(FQDN,
-                                    PORT,
-                                    log_msg.id,
-                                    file_name,
-                                    file_hash)
-        file_hash = get_hash(log_msg, HASH_LENGTH)
-        file_name = get_name(log_msg)
-        file_size = humanbytes(get_media_file_size(m))
-        file_caption = m.caption
-        shortened_stream_link = await get_shortlink(stream_link)
-        shortened_watch_link = await get_shortlink(watch_link)
-
         msg_text ="""
 <b>Your Link is Generated... ⚡\n
-📁 File Name :- {}\n
-📦 File Size :- {}\n
-🔠 File Captain :- {}\n
-📥 Fast Download Link :- {}\n
-🖥 Watch Link :- {}\n
+📁 File Name :- {get_name(log_msg)}\n
+📦 File Size :- {humanbytes(get_media_file_size(m))}\n
+🔠 File Captain :- {m.caption}\n
 ❗ Note :- This Link is Permanent and Won't Gets Expired 🚫\n
 ©️ <a href=https://t.me/Star_Bots_Tamil><b></b>Star Bots Tamil</a></b></b>"""
 
