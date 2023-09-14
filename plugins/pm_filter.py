@@ -770,7 +770,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             log_msg = await client.send_cached_media(
                 chat_id=LOG_CHANNEL,
                 file_id=file_id,
-                caption=message.caption,
+                caption=query.message.caption,
             )
             fileName = get_name(log_msg)
             filesize = humanbytes(get_media_file_size(m))
