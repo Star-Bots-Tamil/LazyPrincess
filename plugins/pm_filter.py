@@ -773,7 +773,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 caption=query.message.caption,
             )
             fileName = get_name(log_msg)
-            filesize = humanbytes(get_media_file_size(m))
+            filesize = humanbytes(get_media_file_size(message))
             lazy_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
             lazy_download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
             await log_msg.reply_text(
