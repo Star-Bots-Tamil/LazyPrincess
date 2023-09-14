@@ -71,7 +71,7 @@ ADMIN_USRNM = environ.get('ADMIN_USRNM','TG_Karthik') # WITHOUT @
 MAIN_CHANNEL_USRNM = environ.get('MAIN_CHANNEL_USRNM','Star_Moviess_Tamil') # WITHOUT @
 DEV_CHANNEL_USRNM = environ.get('DEV_CHANNEL_USRNM','Star_Channels_Tamil') # WITHOUT @
 LAZY_YT_HANDLE = environ.get('LAZY_YT_HANDLE','Star_Bots_Tamil')  # WITHOUT @ [  add only handle - don't add full url  ] 
-MOVIE_GROUP_USERNAME = environ.get('MOVIE_GROUP_USERNAME', "Star_Movies_Request) #[ without @ ]
+MOVIE_GROUP_USERNAME = environ.get('MOVIE_GROUP_USERNAME', "Star_Movies_Request") #[ without @ ]
 
 # Url Shortner
 URL_MODE = is_enabled((environ.get("URL_MODE", "True")), False)
