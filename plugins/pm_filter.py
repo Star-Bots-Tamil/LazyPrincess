@@ -463,20 +463,20 @@ async def cb_handler(client: Client, query: CallbackQuery):
         user_id = query.from_user.id
 
         if act == "":
-            stat = "CONNECT"
+            stat = "Connect"
             cb = "connectcb"
         else:
-            stat = "DISCONNECT"
+            stat = "Disconnect"
             cb = "disconnect"
 
         keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton(f"{stat}", callback_data=f"{cb}:{group_id}"),
-             InlineKeyboardButton("DELETE", callback_data=f"deletecb:{group_id}")],
-            [InlineKeyboardButton("BACK", callback_data="backcb")]
+             InlineKeyboardButton("Delete 🗑️", callback_data=f"deletecb:{group_id}")],
+            [InlineKeyboardButton("Back", callback_data="backcb")]
         ])
 
         await query.message.edit_text(
-            f"Group Name : **{title}**\nGroup ID : `{group_id}`",
+            f"**Group Name :- {title}\nGroup ID :- `{group_id}`\n\nNow You Can Custom Our Bot to Your Group's Desire**",
             reply_markup=keyboard,
             parse_mode=enums.ParseMode.MARKDOWN
         )
@@ -496,7 +496,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
         if mkact:
             await query.message.edit_text(
-                f"Connected to **{title}**",
+                f"**Connected to {title}**",
                 parse_mode=enums.ParseMode.MARKDOWN
             )
         else:
