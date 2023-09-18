@@ -562,7 +562,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 ttl = await client.get_chat(int(groupid))
                 title = ttl.title
                 active = await if_active(str(userid), str(groupid))
-                act = " - ACTIVE" if active else ""
+                act = " - Active" if active else ""
                 buttons.append(
                     [
                         InlineKeyboardButton(
@@ -574,7 +574,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 pass
         if buttons:
             await query.message.edit_text(
-                "Your connected group details ;\n\n",
+                "**Your Connected Group Details :\n\n",
                 reply_markup=InlineKeyboardMarkup(buttons)
             )
     elif "alertmessage" in query.data:
@@ -668,6 +668,23 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=keyboard,
             protect_content=True if ident == 'checksubp' else False
         )
+
+    # Custom Your Group
+
+    elif query.data == "shortlinkcb":
+        buttons = [[
+            InlineKeyboardButton('Set Shortlink', callback_data='setshortlink'),
+            InlineKeyboardButton('Delete Shortlink', callback_data='deleteshortlink')
+        ], [
+            InlineKeyboardButton('Shortlink on / Off', callback_data='from  settings'),
+            InlineKeyboardButton('Back', callback_data='groupcb')
+        ]]
+        reply_markup = InlineKeyboardMarkup(buttons)
+        await query.message.edit_text(
+            text=script.SHORTLINK_TXT.format(temp.B_NAME),
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+	)
     elif query.data == "pages":
         await query.answer()
     elif query.data == "start":
