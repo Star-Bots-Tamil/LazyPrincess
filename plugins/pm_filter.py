@@ -470,6 +470,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             cb = "disconnect"
 
         keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton(f"Shortlink", callback_data="shortlinkcb"),
+             InlineKeyboardButton("Tutorial", callback_data="tutorialcb")],
             [InlineKeyboardButton(f"{stat}", callback_data=f"{cb}:{group_id}"),
              InlineKeyboardButton("Delete 🗑️", callback_data=f"deletecb:{group_id}")],
             [InlineKeyboardButton("Back", callback_data="backcb")]
