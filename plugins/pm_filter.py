@@ -673,7 +673,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
     elif query.data == "shortlinkcb":
         buttons = [[
-            InlineKeyboardButton(f"{'Change' if settings["shortlink"] else 'Set'} Shortlink", callback_data='setshortlink'),
+            InlineKeyboardButton(f"{'Change' if settings["is_shortlink"] else 'Set'} Shortlink", callback_data='setshortlink'),
             InlineKeyboardButton('Delete Shortlink', callback_data='deleteshortlink')
         ], [
             InlineKeyboardButton('Shortlink on / Off', callback_data='from  settings'),
