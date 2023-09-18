@@ -608,10 +608,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
         try:
             if AUTH_CHANNEL and not await is_subscribed(client, query):
-                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+                await query.answer(url=f"https://t.me/{BOT_USERNAME}?start={ident}_{file_id}")
                 return
             elif settings['botpm']:
-                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+                await query.answer(url=f"https://t.me/{BOT_USERNAME}?start={ident}_{file_id}")
                 return
             else:
                 # Create the inline keyboard button with callback_data
@@ -629,9 +629,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         except UserIsBlocked:
             await query.answer('☣Unblock the bot sweetie!', show_alert=True)
         except PeerIdInvalid:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(url=f"https://t.me/{BOT_USERNAME}?start={ident}_{file_id}")
         except Exception as e:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(url=f"https://t.me/{BOT_USERNAME}?start={ident}_{file_id}")
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
             await query.answer("Mere saamne jyada smart nhi banne ka sona 😒", show_alert=True)
@@ -670,15 +670,15 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.answer()
     elif query.data == "start":
         buttons = [[
-            InlineKeyboardButton('➕↖️ Add Me To Your Groups ↗️➕', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
+            InlineKeyboardButton('➕↖️ Add Me To Your Groups ↗️➕', url=f'http://t.me/{BOT_USERNAME}?startgroup=true')
         ], [
             InlineKeyboardButton('🧞‍♀️ Search 🧐', switch_inline_query_current_chat=''),
-            InlineKeyboardButton('🔔 Updates 🤖', url='https://t.me/LazyDeveloper')
+            InlineKeyboardButton('🔔 Bot Updates 🤖', url='https://t.me/Star_Bots_Tamil')
         ], [
             InlineKeyboardButton('🙆🏻 Help 🦾', callback_data='help'),
             InlineKeyboardButton('♥️ About ♥️', callback_data='about')
         ],[
-            InlineKeyboardButton('Watch Tutorial', url='https://youtube.com/LazyDeveloper')
+            InlineKeyboardButton('Movie Updates', url='https://t.me/Star_Moviess_Tamil')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
