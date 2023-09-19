@@ -705,9 +705,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
         user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
         if not user_input_msg.text:
             await query.message.edit("Process Cancelled!")
+            await query.message.reply_to_message.delete()
             return await user_input_msg.continue_propagation()
         if user_input_msg.text and user_input_msg.text.startswith("/"):
             await query.message.edit("Process Cancelled!")
+            await query.message.reply_to_message.delete()
             return await user_input_msg.continue_propagation()
         await save_group_settings(grpid, 'shortlink', shortlink_url)
         await save_group_settings(grpid, 'shortlink_api', api)
