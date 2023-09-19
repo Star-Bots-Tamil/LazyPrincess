@@ -686,8 +686,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
 	)
     elif query.data == "setshortlink":
-        grpid = message.chat.id
-        title = message.chat.title
+        grpid = query.message.chat.id
+        title = query.message.chat.title
         await query.answer()
         await query.message.edit("Okay,\n"
                               "Send me your custom shortlink URL.\n\n"
@@ -712,11 +712,16 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await save_group_settings(grpid, 'shortlink', shortlink_url)
         await save_group_settings(grpid, 'shortlink_api', api)
         await save_group_settings(grpid, 'is_shortlink', True)
-        await query.message.edit("<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
-                              reply_markup=InlineKeyboardMarkup(
-                                  [[InlineKeyboardButton("Back",
-                                                               callback_data="groupcb")]]
-                              ))
+        await query.message.edit(
+                text="<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
+                quote=True,
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Back", callback_data="groupcb")]])
+	    )
+        except Exception as e:
+            print(e)  # print the error message in logs
+            await query.message.edit(f"**Error of Your Shortlink URL or API ●>** `{e}`")
+            return
     elif query.data == "pages":
         await query.answer()
     elif query.data == "start":
@@ -845,7 +850,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
             print(e)  # print the error message
             await query.answer(f"☣something went wrong sweetheart\n\n{e}", show_alert=True)
             return
-
 
     elif data.startswith("notify_user_not_avail"):
         _, user_id, movie = data.split(":")
