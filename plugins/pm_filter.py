@@ -720,10 +720,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 disable_web_page_preview=True,
                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Back", callback_data="groupcb")]])
 	)
-        except Exception as e:
-            print(e)  # print the error message in logs
-            await query.message.edit(f"**Error of Your Shortlink URL or API ●>** `{e}`")
-            return
+    except Exception as e:
+        print(e)  # print the error message in logs
+        await query.message.edit(f"**Error of Your Shortlink URL or API ●>** `{e}`")
+        return
     elif query.data == "pages":
         await query.answer()
     elif query.data == "start":
