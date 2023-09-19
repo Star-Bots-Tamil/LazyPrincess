@@ -686,6 +686,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
 	)
     elif query.data == "setshortlink":
+        grpid = message.chat.id
+        title = message.chat.title
         await query.answer()
         await query.message.edit("Okay,\n"
                               "Send me your custom shortlink URL.\n\n"
@@ -701,14 +703,16 @@ async def cb_handler(client: Client, query: CallbackQuery):
                               "Send me your custom shortlink API.\n\n"
                               "Press /cancel to cancel process.")
         user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
-        if not user_input_msg.url:
+        if not user_input_msg.text:
             await query.message.edit("Process Cancelled!")
             return await user_input_msg.continue_propagation()
-        if user_input_msg.url and user_input_msg.text.startswith("/"):
+        if user_input_msg.text and user_input_msg.text.startswith("/"):
             await query.message.edit("Process Cancelled!")
             return await user_input_msg.continue_propagation()
-        await save_group_settings(query.message.chat.id, 'shortlink', shortlink_url)
-        await query.message.edit("Custom Shortlink Added Successfully!",
+        await save_group_settings(grpid, 'shortlink', shortlink_url)
+        await save_group_settings(grpid, 'shortlink_api', api)
+        await save_group_settings(grpid, 'is_shortlink', True)
+        await query.message.edit("<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
                               reply_markup=InlineKeyboardMarkup(
                                   [[InlineKeyboardButton("Back",
                                                                callback_data="groupcb")]]
