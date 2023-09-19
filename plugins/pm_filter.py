@@ -685,6 +685,34 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
 	)
+    elif query.data == "setshortlink":
+        await query.answer()
+        await query.message.edit("Okay,\n"
+                              "Send me your custom shortlink URL.\n\n"
+                              "Press /cancel to cancel process.")
+        user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
+        if not user_input_msg.url:
+            await query.message.edit("Process Cancelled!")
+            return await user_input_msg.continue_propagation()
+        if user_input_msg.url and user_input_msg.text.startswith("/"):
+            await query.message.edit("Process Cancelled!")
+            return await user_input_msg.continue_propagation()
+        await query.message.edit("Okay,\n"
+                              "Send me your custom shortlink API.\n\n"
+                              "Press /cancel to cancel process.")
+        user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
+        if not user_input_msg.url:
+            await query.message.edit("Process Cancelled!")
+            return await user_input_msg.continue_propagation()
+        if user_input_msg.url and user_input_msg.text.startswith("/"):
+            await query.message.edit("Process Cancelled!")
+            return await user_input_msg.continue_propagation()
+        await save_group_settings(query.message.chat.id, 'shortlink', shortlink_url)
+        await query.message.edit("Custom Shortlink Added Successfully!",
+                              reply_markup=InlineKeyboardMarkup(
+                                  [[InlineKeyboardButton("Back",
+                                                               callback_data="groupcb")]]
+                              ))
     elif query.data == "pages":
         await query.answer()
     elif query.data == "start":
