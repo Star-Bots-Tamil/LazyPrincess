@@ -686,6 +686,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
 	)
     elif query.data == "setshortlink":
+        buttons = [[
+            InlineKeyboardButton('⚙️ Group Settings', callback_data='groupcb')
+        ]]
+        reply_markup = InlineKeyboardMarkup(buttons)
         grpid = query.message.chat.id
         title = query.message.chat.title
         await query.answer()
@@ -718,8 +722,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 text="<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
                 quote=True,
                 disable_web_page_preview=True,
-                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Back", callback_data="groupcb")]]
-						 )
+                reply_markup=reply_markup
         )
     except Exception as e:
         print(e)  # print the error message in logs
