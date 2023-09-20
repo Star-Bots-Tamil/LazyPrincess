@@ -686,7 +686,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
 	)
     elif query.data == "setshortlink":
-    try:
         buttons = [[
             InlineKeyboardButton('⚙️ Group Settings', callback_data='groupcb')
         ]]
@@ -719,6 +718,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await save_group_settings(grpid, 'shortlink', shortlink_url)
         await save_group_settings(grpid, 'shortlink_api', api)
         await save_group_settings(grpid, 'is_shortlink', True)
+    try:
         await query.message.edit(
                 text="<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
                 quote=True,
