@@ -686,6 +686,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
 	)
     elif query.data == "setshortlink":
+    try:
         buttons = [[
             InlineKeyboardButton('⚙️ Group Settings', callback_data='groupcb')
         ]]
