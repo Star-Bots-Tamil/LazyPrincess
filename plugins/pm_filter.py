@@ -696,31 +696,32 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.message.edit("Okay,\n"
                               "Send me your custom shortlink URL.\n\n"
                               "Press /cancel to cancel process.")
-        user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
-        if not user_input_msg.url:
+        user_input_msg: Message = await client.listen(query.message.chat.id)
+        if not user_input_msg.text or user_input_msg.text.startswith("/"):
             await query.message.edit("Process Cancelled!")
-            return await user_input_msg.continue_propagation()
-        if user_input_msg.url and user_input_msg.text.startswith("/"):
-            await query.message.edit("Process Cancelled!")
-            return await user_input_msg.continue_propagation()
+            return
+
+        shortlink_url = user_input_msg.text
+
         await query.message.edit("Okay,\n"
                               "Send me your custom shortlink API.\n\n"
                               "Press /cancel to cancel process.")
-        user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
-        if not user_input_msg.text:
+        user_input_msg: Message = await client.listen(query.message.chat.id)
+        if not user_input_msg.text or user_input_msg.text.startswith("/"):
             await query.message.edit("Process Cancelled!")
             await query.message.reply_to_message.delete()
-            return await user_input_msg.continue_propagation()
-        if user_input_msg.text and user_input_msg.text.startswith("/"):
-            await query.message.edit("Process Cancelled!")
-            await query.message.reply_to_message.delete()
-            return await user_input_msg.continue_propagation()
+            return
+
+        api = user_input_msg.text
+
+        # Assuming you have a function save_group_settings that saves the data
         await save_group_settings(grpid, 'shortlink', shortlink_url)
         await save_group_settings(grpid, 'shortlink_api', api)
         await save_group_settings(grpid, 'is_shortlink', True)
-    try:
-        await query.message.edit(
-                text="<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
+
+        try:
+            await query.message.edit(
+                text=f"<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
                 quote=True,
                 disable_web_page_preview=True,
                 reply_markup=reply_markup,
@@ -729,7 +730,52 @@ async def cb_handler(client: Client, query: CallbackQuery):
         except Exception as e:
             print(e)  # Print the error message in logs
             await query.message.edit(f"**Error of Your Shortlink URL or API ●>** `{e}`")
-            return
+		
+#    elif query.data == "setshortlink":
+#        buttons = [[
+#            InlineKeyboardButton('⚙️ Group Settings', callback_data='groupcb')
+#        ]]
+#        reply_markup = InlineKeyboardMarkup(buttons)
+#        grpid = query.message.chat.id
+#        title = query.message.chat.title
+#        await query.answer()
+#        await query.message.edit("Okay,\n"
+#                              "Send me your custom shortlink URL.\n\n"
+#                              "Press /cancel to cancel process.")
+#        user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
+#        if not user_input_msg.url:
+#            await query.message.edit("Process Cancelled!")
+#            return await user_input_msg.continue_propagation()
+#        if user_input_msg.url and user_input_msg.text.startswith("/"):
+#            await query.message.edit("Process Cancelled!")
+#            return await user_input_msg.continue_propagation()
+#        await query.message.edit("Okay,\n"
+#                              "Send me your custom shortlink API.\n\n"
+#                              "Press /cancel to cancel process.")
+#        user_input_msg: "types.Message" = await client.listen(query.message.chat.id)
+#        if not user_input_msg.text:
+#            await query.message.edit("Process Cancelled!")
+#            await query.message.reply_to_message.delete()
+#            return await user_input_msg.continue_propagation()
+#        if user_input_msg.text and user_input_msg.text.startswith("/"):
+#            await query.message.edit("Process Cancelled!")
+#            await query.message.reply_to_message.delete()
+#            return await user_input_msg.continue_propagation()
+#        await save_group_settings(grpid, 'shortlink', shortlink_url)
+#        await save_group_settings(grpid, 'shortlink_api', api)
+#        await save_group_settings(grpid, 'is_shortlink', True)
+#    try:
+#        await query.message.edit(
+#                text="<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
+#                quote=True,
+#                disable_web_page_preview=True,
+#                reply_markup=reply_markup,
+#                parse_mode=enums.ParseMode.HTML
+#            )
+#        except Exception as e:
+#            print(e)  # Print the error message in logs
+#            await query.message.edit(f"**Error of Your Shortlink URL or API ●>** `{e}`")
+#            return
     elif query.data == "pages":
         await query.answer()
     elif query.data == "start":
