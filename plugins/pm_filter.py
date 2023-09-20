@@ -722,10 +722,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 text="<b>Successfully added Shortlink URL and API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>",
                 quote=True,
                 disable_web_page_preview=True,
-                reply_markup=reply_markup
-            )
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML
+	   )
     except Exception as e:
-        print(e)  # print the error message in logs
+        print(e)  # Print the error message in logs
         await query.message.edit(f"**Error of Your Shortlink URL or API ●>** `{e}`")
         return
     elif query.data == "pages":
