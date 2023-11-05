@@ -672,8 +672,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
     # Custom Your Group
 
     elif query.data == "shortlinkcb":
+        settings = await get_settings(query.message.chat.id)
+        shortlinkk = settings["is_shortlink"]
         buttons = [[
-            InlineKeyboardButton(f"{'Change' if settings["is_shortlink"] else 'Set'} Shortlink", callback_data='setshortlink'),
+            InlineKeyboardButton(f"{'Change' if shortlinkk else 'Set'} Shortlink", callback_data='setshortlink'),
             InlineKeyboardButton('Delete Shortlink', callback_data='deleteshortlink')
         ], [
             InlineKeyboardButton('Shortlink on / Off', callback_data='from  settings'),
