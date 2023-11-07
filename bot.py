@@ -64,7 +64,7 @@ async def Lazy_start():
         asyncio.create_task(ping_server())
     app = web.AppRunner(await web_server())
     await app.setup()
-    bind_address = "0.0.0.0" if ON_HEROKU else BIND_ADRESS
+    bind_address = "star-movies-bot-o372.onrender.com" if ON_HEROKU else BIND_ADRESS
     await web.TCPSite(app, bind_address, PORT).start()
     await idle()
 
