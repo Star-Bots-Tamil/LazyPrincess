@@ -94,7 +94,7 @@ async def channel_receive_handler(bot, broadcast):
             quote=True,
             parse_mode=ParseMode.HTML
         )
-        await bot.edit_message_reply_markup(
+        await message.edit_reply_markup(
             chat_id=broadcast.chat.id,
             message_id=broadcast.id,
             reply_markup=InlineKeyboardMarkup(
