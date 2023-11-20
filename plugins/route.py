@@ -6,8 +6,8 @@
 # Thank you LazyDeveloper for helping us in this Journey
 # 🥰  Thank you for giving me credit @LazyDeveloperr  🥰
 # for any error please contact me -> telegram@LazyDeveloperr or insta @LazyDeveloperr 
-
-
+import os
+ROOT = os.path.dirname(__file__)
 import re
 import math
 import logging
@@ -28,8 +28,9 @@ from info import *
 routes = web.RouteTableDef()
 
 @routes.get("/", allow_head=True)
-async def root_route_handler(_):
-    return web.Response(text="Success is the journey of millions of failure and lots of hard work & smart logics. - @LazyDeveloperr -/-- Welcome to our #LazyFamily 🥰")
+async def root_route_handler(request):
+    content = open(os.path.join(ROOT, "/template/dl.html"), "r").read()
+    return web.Response(content_type="text/html", text=content)
 
 
 @routes.get(r"/watch/{path:\S+}", allow_head=True)
