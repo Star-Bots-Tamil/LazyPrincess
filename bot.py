@@ -65,7 +65,7 @@ async def Lazy_start():
     app = web.AppRunner(await web_server())
     await app.setup()
     bind_address = "0.0.0.0" if ON_HEROKU else BIND_ADRESS
-    await web.TCPSite(app, "0.0.0.0", PORT).start()
+    await web.TCPSite(app, "0.0.0.0", 8080).start()
     await idle()
 
 if __name__ == '__main__':
