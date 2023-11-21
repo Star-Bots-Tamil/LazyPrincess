@@ -29,6 +29,7 @@ from urllib.parse import quote_plus
 from util.file_properties import get_name, get_hash, get_media_file_size
 import logging
 logger = logging.getLogger(__name__)
+from shortzy import Shortzy
 
 BATCH_FILES = {}
   
@@ -40,6 +41,16 @@ async def get_channel_shortlink(link):
         async with session.get(url, params=params, raise_for_status=True) as response:
             data = await response.json()
             return data["shortenedUrl"]
+
+async def get_channel_shortlinkk(url):
+    if True:
+        shortzy = Shortzy(URL_SHORTNER_WEBSITE_API, URL_SHORTENR_WEBSITE)
+        try:
+            url = await shortzy.convert(url)
+        except Exception as e:
+            url = await shortzy.get_quick_link(url)
+
+    return url
 
 def get_media_file_name(m):
     media = m.video or m.document
@@ -656,7 +667,7 @@ async def channel_receive_handler(bot, broadcast):
         filesize = humanbytes(get_media_file_size(log_msg))
         star_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         star_download = f"{URL}download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-        shortened_link = await get_channel_shortlink(star_stream)
+        shortened_link = await get_channel_shortlinkk(star_stream)
         await log_msg.reply_text(
             text=f"•• Link Generated Successfully\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
             quote=True,
