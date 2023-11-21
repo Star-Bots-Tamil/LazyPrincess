@@ -648,7 +648,6 @@ async def channel_receive_handler(client, message):
         channel_id = message.chat.id
         log_msg = await client.send_cached_media(
             chat_id=FILES_CHANNEL,
-            file_id=file_id,
             caption=message.caption,
         )
         fileName = get_name(log_msg)
