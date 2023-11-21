@@ -18,6 +18,22 @@ logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
 
+async def get_channel_shortlink(link):
+    url = 'https://{URL_SHORTENR_WEBSITE}/api'
+    params = {'api': URL_SHORTNER_WEBSITE_API, 'url': link}
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+            data = await response.json()
+            return data["shortenedUrl"]
+
+def get_media_file_name(m):
+    media = m.video or m.document
+    if media and media.file_name:
+        return urllib.parse.quote_plus(media.file_name)
+    else:
+        return None
+
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
@@ -608,3 +624,37 @@ async def save_template(client, message):
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
+
+@Client.on_message(filters.channel & ~filters.group & (filters.document | filters.video | filters.photo)  & ~filters.forwarded, group=-1)
+async def channel_receive_handler(bot, broadcast):
+    if int(broadcast.chat.id) in Var.BANNED_CHANNELS:
+        await bot.leave_chat(broadcast.chat.id)
+        
+        return
+    try:
+        log_msg = await broadcast.forward(chat_id=Var.BIN_CHANNEL)
+        stream_link = f"{Var.URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        online_link = f"{Var.URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        await log_msg.reply_text(
+            text=f"**Channel Name:** `{broadcast.chat.title}`\n**CHANNEL ID:** `{broadcast.chat.id}`\n**Rᴇǫᴜᴇsᴛ ᴜʀʟ:** {stream_link}",
+            quote=True
+        )
+        await bot.edit_message_reply_markup(
+            chat_id=broadcast.chat.id,
+            message_id=broadcast.id,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("🖥STREAM ", url=stream_link),
+                     InlineKeyboardButton('Dᴏᴡɴʟᴏᴀᴅ📥', url=online_link)] 
+                ]
+            )
+        )
+    except FloodWait as w:
+        print(f"Sleeping for {str(w.x)}s")
+        await asyncio.sleep(w.x)
+        await bot.send_message(chat_id=Var.BIN_CHANNEL,
+                             text=f"GOT FLOODWAIT OF {str(w.x)}s FROM {broadcast.chat.title}\n\n**CHANNEL ID:** `{str(broadcast.chat.id)}`",
+                             disable_web_page_preview=True)
+    except Exception as e:
+        await bot.send_message(chat_id=Var.BIN_CHANNEL, text=f"**#ERROR_TRACKEBACK:** `{e}`", disable_web_page_preview=True)
+        print(f"Cᴀɴ'ᴛ Eᴅɪᴛ Bʀᴏᴀᴅᴄᴀsᴛ Mᴇssᴀɢᴇ!\nEʀʀᴏʀ:  **Give me edit permission in updates and bin Channel!{e}**")
