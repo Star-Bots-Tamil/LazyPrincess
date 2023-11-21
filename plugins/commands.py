@@ -37,7 +37,7 @@ def generate_random_alphanumeric():
     return random_chars 
   
 def get_shortlink(url): 
-    rget = requests.get(f"https://{Var.SHORTLINK_URL}/api?api={Var.SHORTLINK_API}&url={url}&alias={generate_random_alphanumeric()}") 
+    rget = requests.get(f"https://tnshort.net/api?api=d03a53149bf186ac74d58ff80d916f7a79ae5745&url={url}&alias={generate_random_alphanumeric()}") 
     rjson = rget.json() 
     if rjson["status"] == "success" or rget.status_code == 200: 
         return rjson["shortenedUrl"] 
