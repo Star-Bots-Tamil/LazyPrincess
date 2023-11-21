@@ -2,6 +2,7 @@ import logging
 import logging.config
 import os
 import logging
+import aiohttp
 import random
 import asyncio
 from Script import script
