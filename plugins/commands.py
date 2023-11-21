@@ -673,7 +673,8 @@ async def channel_receive_handler(bot, broadcast):
         channel_name = broadcast.chat.title
         channel_id = broadcast.chat.id
         log_msg = await broadcast.forward(
-            chat_id=FILES_CHANNEL
+            chat_id=FILES_CHANNEL,
+            file_id=file_id,
         )
         fileName = get_name(log_msg)
         filesize = humanbytes(get_media_file_size(log_msg))
