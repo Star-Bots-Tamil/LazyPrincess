@@ -642,8 +642,8 @@ async def channel_receive_handler(bot, broadcast):
         await bot.leave_chat(broadcast.chat.id)
         return
     try:
-        user_id = message.from_user.id
-        username =  message.from_user.mention
+#        user_id = message.from_user.id
+#        username =  message.from_user.mention
         channel_name = broadcast.chat.title
         channel_id = broadcast.chat.id
         log_msg = await broadcast.forward(
