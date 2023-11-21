@@ -4,8 +4,8 @@ import random
 import asyncio
 from Script import script
 from pyrogram import Client, filters, enums
-from pyrogram.errors import ChatAdminRequired, FloodWait
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.errors import ChatAdminRequired, FloodWait, UserNotParticipant
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id
 from database.users_chats_db import db
 from info import *
@@ -14,6 +14,16 @@ from database.connections_mdb import active_connection
 import re
 import json
 import base64
+from pyshorteners import Shortener
+from database.lazy_utils import progress_for_pyrogram, convert, humanbytes
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+import humanize
+from util.human_readable import humanbytes
+from urllib.parse import quote_plus
+from util.file_properties import get_name, get_hash, get_media_file_size
+import logging
+logger.setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
