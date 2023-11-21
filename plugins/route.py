@@ -27,11 +27,14 @@ from info import *
 
 routes = web.RouteTableDef()
 
-@routes.get("/", allow_head=True)
-async def root_route_handler(request):
+#@routes.get("/", allow_head=True)
+#async def root_route_handler(request):
     #content = open(os.path.join(ROOT, "/template/index.html"), "r").read()
-    return web.Response(content_type="text/html", text="Hello World...!")
+#    return web.Response(content_type="text/html", text=content)
 
+@routes.get("/", allow_head=True)
+async def root_route_handler(_):
+    return web.Response(text="Hello World...!")
 
 @routes.get(r"/watch/{path:\S+}", allow_head=True)
 async def stream_handler(request: web.Request):
