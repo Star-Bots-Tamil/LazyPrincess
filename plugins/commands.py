@@ -678,8 +678,8 @@ async def channel_receive_handler(bot, broadcast):
         )
         fileName = get_name(log_msg)
         filesize = humanbytes(get_media_file_size(log_msg))
-        star_stream = f"{URL}Watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-        star_download = f"{URL}Download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        star_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        star_download = f"{URL}download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         shortened_link = await get_shortlink(star_stream)
         await log_msg.reply_text(
             text=f"•• Link Generated Successfully\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
