@@ -1,6 +1,7 @@
 import logging
 import logging.config
 import os
+import requests 
 import logging
 import aiohttp
 import random
