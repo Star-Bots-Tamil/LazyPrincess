@@ -30,6 +30,21 @@ logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
 
+def generate_random_alphanumeric(): 
+    """Generate a random 8-letter alphanumeric string.""" 
+    characters = string.ascii_letters + string.digits 
+    random_chars = ''.join(random.choice(characters) for _ in range(8)) 
+    return random_chars 
+  
+def get_shortlink(url): 
+    rget = requests.get(f"https://{Var.SHORTLINK_URL}/api?api={Var.SHORTLINK_API}&url={url}&alias={generate_random_alphanumeric()}") 
+    rjson = rget.json() 
+    if rjson["status"] == "success" or rget.status_code == 200: 
+        return rjson["shortenedUrl"] 
+    else: 
+        return url 
+  
+
 async def get_channel_shortlink(link):
     url = 'https://{URL_SHORTENR_WEBSITE}/api'
     params = {'api': URL_SHORTNER_WEBSITE_API, 'url': link}
@@ -654,7 +669,7 @@ async def channel_receive_handler(bot, broadcast):
         filesize = humanbytes(get_media_file_size(log_msg))
         star_stream = f"{URL}Watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         star_download = f"{URL}Download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-        shortened_link = await get_channel_shortlink(star_stream)
+        shortened_link = await get_shortlink(star_stream)
         await log_msg.reply_text(
             text=f"•• Link Generated Successfully\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
             quote=True,
