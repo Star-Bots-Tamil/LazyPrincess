@@ -637,18 +637,17 @@ async def save_template(client, message):
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
 
 @Client.on_message(filters.channel & ~filters.group & (filters.document | filters.video | filters.photo)  & ~filters.forwarded, group=-1)
-async def channel_receive_handler(client, message):
-    if int(message.chat.id) in BANNED_CHANNELS:
-        await client.leave_chat(message.chat.id)
+async def channel_receive_handler(bot, broadcast):
+    if int(broadcast.chat.id) in BANNED_CHANNELS:
+        await bot.leave_chat(broadcast.chat.id)
         return
     try:
         user_id = message.from_user.id
         username =  message.from_user.mention
-        channel_name = message.chat.title
-        channel_id = message.chat.id
-        log_msg = await client.send_cached_media(
-            chat_id=FILES_CHANNEL,
-            caption=message.caption,
+        channel_name = broadcast.chat.title
+        channel_id = broadcast.chat.id
+        log_msg = await broadcast.forward(
+            chat_id=FILES_CHANNEL
         )
         fileName = get_name(log_msg)
         filesize = humanbytes(get_media_file_size(log_msg))
@@ -656,20 +655,26 @@ async def channel_receive_handler(client, message):
         star_download = f"{URL}Download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         shortened_link = await get_shortlink(star_stream)
         await log_msg.reply_text(
-            text=f"•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ꜰᴏʀ ɪᴅ #{user_id} \n•• ᴜꜱᴇʀɴᴀᴍᴇ : {username} \n\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
+            text=f"•• Link Generated Successfully\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
             quote=True,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("web Download", url=star_download),  # we download Link
                                                 InlineKeyboardButton('▶Stream online', url=star_stream)]])  # web stream Link
         )
-        await message.edit_reply_markup(
-            chat_id=message.chat.id,
-            message_id=message.id,
+        await bot.edit_message_reply_markup(
+            chat_id=broadcast.chat.id,
+            message_id=broadcast.id,
             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("📥 Fast Download Link", url=shortened_link)]])  # web stream Link
         )
+    except FloodWait as w:
+        print(f"Sleeping for {str(w.x)}s")
+        await asyncio.sleep(w.x)
+        await bot.send_message(chat_id=FILES_CHANNEL,
+                             text=f"GOT FLOODWAIT OF {str(w.x)}s FROM {broadcast.chat.title}\n\n**CHANNEL ID:** `{str(broadcast.chat.id)}`",
+                             disable_web_page_preview=True)
     except Exception as e:
-        print(e)  # print the error message
-        pass
+        await bot.send_message(chat_id=FILES_CHANNEL, text=f"**#ERROR_TRACKEBACK:** `{e}`", disable_web_page_preview=True)
+        print(f"Can't Edit Boardcast Message!\nError:  **Give me edit permission in updates and bin Channel!{e}**")
 
 #        log_msg = await message.forward(chat_id=Var.BIN_CHANNEL)
 #        stream_link = f"{Var.URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
