@@ -31,36 +31,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
-
-def generate_random_alphanumeric(): 
-    """Generate a random 8-letter alphanumeric string.""" 
-    characters = string.ascii_letters + string.digits 
-    random_chars = ''.join(random.choice(characters) for _ in range(8)) 
-    return random_chars 
   
-def get_shortlinkk(url): 
-    rget = requests.get(f"https://tnshort.net/api?api=d03a53149bf186ac74d58ff80d916f7a79ae5745&url={url}&alias={generate_random_alphanumeric()}") 
-    rjson = rget.json() 
-    if rjson["status"] == "success" or rget.status_code == 200: 
-        return rjson["shortenedUrl"] 
-    else: 
-        return url 
-  
-async def get_shortlink(link):
-    url = 'https://tnshort.net/api'
-    params = {'api': URL_SHORTNER_WEBSITE_API, 'url': link}
-
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, params=params, raise_for_status=True) as response:
-            data = await response.json()
-            return data["shortenedUrl"]
-
 async def get_channel_shortlink(link):
     url = 'https://{URL_SHORTENR_WEBSITE}/api'
     params = {'api': URL_SHORTNER_WEBSITE_API, 'url': link}
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+        async with session.get(url, params=params, raise_for_status=True) as response:
             data = await response.json()
             return data["shortenedUrl"]
 
@@ -662,7 +639,7 @@ async def save_template(client, message):
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
 
-@Client.on_message(filters.channel & ~filters.group & (filters.document | filters.video | filters.photo)  & ~filters.forwarded, group=-1)
+@Client.on_message(filters.channel & (filters.document | filters.video)  & ~filters.forwarded, group=-1)
 async def channel_receive_handler(bot, broadcast):
     if int(broadcast.chat.id) in BANNED_CHANNELS:
         await bot.leave_chat(broadcast.chat.id)
@@ -674,13 +651,12 @@ async def channel_receive_handler(bot, broadcast):
         channel_id = broadcast.chat.id
         log_msg = await broadcast.forward(
             chat_id=LOG_CHANNEL,
-            #file_id=file_id,
         )
         fileName = get_name(log_msg)
         filesize = humanbytes(get_media_file_size(log_msg))
         star_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         star_download = f"{URL}download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-        shortened_link = await get_shortlink(star_stream)
+        shortened_link = await get_channel_shortlink(star_stream)
         await log_msg.reply_text(
             text=f"•• Link Generated Successfully\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
             quote=True,
