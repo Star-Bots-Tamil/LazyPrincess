@@ -653,8 +653,9 @@ async def channel_receive_handler(client, message):
         )
         fileName = get_name(log_msg)
         filesize = humanbytes(get_media_file_size(log_msg))
-        star_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-        star_download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        star_stream = f"{URL}Watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        star_download = f"{URL}Download/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        shortened_link = await get_shortlink(stream_link)
         await log_msg.reply_text(
             text=f"•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ꜰᴏʀ ɪᴅ #{user_id} \n•• ᴜꜱᴇʀɴᴀᴍᴇ : {username} \n\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- `{channel_name}`\n\n Channel ID :- `{channel_id}`",
             quote=True,
@@ -665,8 +666,7 @@ async def channel_receive_handler(client, message):
         await message.edit_reply_markup(
             chat_id=message.chat.id,
             message_id=message.id,
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("web Download", url=star_download),  # we download Link
-                                                InlineKeyboardButton('▶Stream online', url=star_stream)]])  # web stream Link
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("📥 Fast Download Link", url=shortened_link)]])  # web stream Link
         )
     except Exception as e:
         print(e)  # print the error message
