@@ -637,12 +637,41 @@ async def save_template(client, message):
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
 
 @Client.on_message(filters.channel & ~filters.group & (filters.document | filters.video | filters.photo)  & ~filters.forwarded, group=-1)
-async def channel_receive_handler(bot, message):
-    if int(message.chat.id) in Var.BANNED_CHANNELS:
-        await bot.leave_chat(message.chat.id)
-        
+async def channel_receive_handler(client, message):
+    if int(message.chat.id) in BANNED_CHANNELS:
+        await client.leave_chat(message.chat.id)
         return
     try:
+        user_id = message.from_user.id
+        username =  message.from_user.mention 
+        log_msg = await client.send_cached_media(
+            chat_id=FILES_CHANNEL,
+            file_id=file_id,
+            caption=message.caption,
+        )
+        fileName = get_name(log_msg)
+        filesize = humanbytes(get_media_file_size(log_msg))
+        star_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        star_download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        await log_msg.reply_text(
+            text=f"•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ꜰᴏʀ ɪᴅ #{user_id} \n•• ᴜꜱᴇʀɴᴀᴍᴇ : {username} \n\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName} \n\n••File Size :- {filesize}\n\n Channel Name :- {}",
+            quote=True,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("web Download", url=star_download),  # we download Link
+                                                InlineKeyboardButton('▶Stream online', url=star_stream)]])  # web stream Link
+        )
+        await query.message.reply_text(
+            text="•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ☠︎⚔",
+            quote=True,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("web Download", url=star_download),  # we download Link
+                                                InlineKeyboardButton('▶Stream online', url=star_stream)]])  # web stream Link
+        )
+    except Exception as e:
+        print(e)  # print the error message
+        await query.answer(f"☣something went wrong sweetheart\n\n{e}", show_alert=True)
+        return
+bj
         log_msg = await message.forward(chat_id=Var.BIN_CHANNEL)
         stream_link = f"{Var.URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         online_link = f"{Var.URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
