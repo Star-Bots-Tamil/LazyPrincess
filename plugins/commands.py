@@ -25,7 +25,6 @@ from util.human_readable import humanbytes
 from urllib.parse import quote_plus
 from util.file_properties import get_name, get_hash, get_media_file_size
 import logging
-logger.setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
