@@ -77,7 +77,7 @@ async def private_receive_handler(c: Client, m: Message):
     ),
     group=4,
 )
-async def channel_receive_handler(c: Client, m: Message bot, broadcast ):
+async def channel_receive_handler(c: Client, m: Message):
     if int(m.chat.id) in BANNED_CHANNELS:
         await c.leave_chat(m.chat.id)
         return
