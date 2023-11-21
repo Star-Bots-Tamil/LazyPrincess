@@ -38,7 +38,7 @@ def generate_random_alphanumeric():
     random_chars = ''.join(random.choice(characters) for _ in range(8)) 
     return random_chars 
   
-def get_shortlink(url): 
+def get_shortlinkk(url): 
     rget = requests.get(f"https://tnshort.net/api?api=d03a53149bf186ac74d58ff80d916f7a79ae5745&url={url}&alias={generate_random_alphanumeric()}") 
     rjson = rget.json() 
     if rjson["status"] == "success" or rget.status_code == 200: 
@@ -46,6 +46,14 @@ def get_shortlink(url):
     else: 
         return url 
   
+async def get_shortlink(link):
+    url = 'https://tnshort.net/api'
+    params = {'api': d03a53149bf186ac74d58ff80d916f7a79ae5745, 'url': link}
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params, raise_for_status=True) as response:
+            data = await response.json()
+            return data["shortenedUrl"]
 
 async def get_channel_shortlink(link):
     url = 'https://{URL_SHORTENR_WEBSITE}/api'
