@@ -29,7 +29,7 @@ routes = web.RouteTableDef()
 
 @routes.get("/", allow_head=True)
 async def root_route_handler(request):
-    content = open(os.path.join(ROOT, "/template/dl.html"), "r").read()
+    content = open(os.path.join(ROOT, "/template/index.html"), "r").read()
     return web.Response(content_type="text/html", text=content)
 
 
