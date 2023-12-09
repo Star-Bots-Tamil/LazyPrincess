@@ -1,3 +1,4 @@
+# (c) Star Bots Tamil
 from pyrogram import Client, filters, enums
 from pyshorteners import Shortener
 from info import info
